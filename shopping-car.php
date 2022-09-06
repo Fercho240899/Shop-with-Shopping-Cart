@@ -39,6 +39,15 @@ if(isset($_POST["btnAccion"])){
                     'PRECIO' => $PRECIO
                 );
                 $_SESSION['CARRITO'][0]=$producto;
+                $mensaje="Producto agregado al carrito";
+
+            }else{
+
+            $idproductos = array_column($_SESSION['CARRITO'],"ID");
+            if(in_array($ID, $idproductos)){
+                echo "<script>alert('El producto ya ha sido seleccionado..');</script>";
+                $mensaje="";
+
 
             }else{
                 $NumeroProductos=count($_SESSION['CARRITO']);
@@ -49,12 +58,15 @@ if(isset($_POST["btnAccion"])){
                     'PRECIO' => $PRECIO
                 );
                 $_SESSION['CARRITO'] [$NumeroProductos]=$producto;
+                $mensaje="Producto agregado al carrito";
             }
-            $mensaje=print_r($_SESSION,true);
+        }
+            //$mensaje=print_r($_SESSION,true);
+           
             
         break;
         case "Delete":
-            if(is_numeric(openssl_decrypt( $_POST["id"], COD, KEY))){
+            if(is_numeric(openssl_decrypt( $_POST["id"], COD, KEY))){ //COD Y KEY los archivos se encuentran en config.php
                 $ID=openssl_decrypt( $_POST["id"], COD, KEY);
 
                 foreach($_SESSION["CARRITO"] as $indice=>$producto){
